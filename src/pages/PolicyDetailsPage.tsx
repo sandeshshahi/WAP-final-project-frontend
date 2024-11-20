@@ -24,6 +24,12 @@ export default function PolicyDetailsPage() {
     });
   };
 
+  const tooltipMessage = !isAuthenticated
+    ? 'You must be logged in to vote.'
+    : hasVoted
+      ? 'You have already voted.'
+      : '';
+
   return (
     <>
       <div className="container mx-auto md:px-48 flex flex-col p-4">
@@ -49,14 +55,24 @@ export default function PolicyDetailsPage() {
               <span className="flex items-center justify-center border border-indigo-500 h-12 w-28 text-indigo-600 rounded-sm text-lg font-semibold">
                 {policy?.vote || 0}
               </span>
-              <button
-                type="button"
-                disabled={!isAuthenticated || hasVoted}
-                onClick={handleUpVote}
-                className="bg-indigo-600 text-white h-12 w-28 rounded cursor-pointer flex items-center justify-center hover:bg-indigo-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
-              >
-                Vote
-              </button>
+              <div className="relative group flex flex-col items-center">
+                <button
+                  type="button"
+                  disabled={!isAuthenticated || hasVoted}
+                  onClick={handleUpVote}
+                  className={`bg-indigo-600 text-white h-12 w-28 rounded cursor-pointer flex items-center justify-center hover:bg-indigo-500 disabled:bg-gray-300 disabled:cursor-not-allowed`}
+                >
+                  Vote
+                </button>
+
+                {tooltipMessage && (
+                  <div className="absolute top-full mt-2 hidden group-hover:block bg-gray-700 text-white text-sm rounded px-2 py-1 whitespace-nowrap">
+                    {tooltipMessage}
+                    {/* Tooltip Arrow */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gray-700 rotate-45"></div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className="flex justify-between items-center border-t-2 border-gray-200 pt-2">
